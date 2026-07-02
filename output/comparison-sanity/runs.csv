@@ -1,0 +1,7 @@
+variant,mode,objectives,seed,best_wsmse,runtime_sec,generations,population
+wbeif,wbeif,wsmse,0,192.25069362952587,0.03994689998216927,3,12
+wbeif,wbeif,wsmse,1,247.31488110253744,0.01853909995406866,3,12
+femeif_light,femeif,"wsmse,ptc,ss,lfp",0,192.25069362952587,0.07199940003920346,3,12
+femeif_light,femeif,"wsmse,ptc,ss,lfp",1,240.90283255620113,0.08191900001838803,3,12
+femeif_all,femeif,"wsmse,ptc,dtw,lfp,ss,lmep",0,192.25069362952587,0.2661925000138581,3,12
+femeif_all,femeif,"wsmse,ptc,dtw,lfp,ss,lmep",1,221.20648874987884,0.25647560006473213,3,12

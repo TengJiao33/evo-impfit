@@ -1,0 +1,70 @@
+{
+  "scenario": "rlc_case1",
+  "notes": "Synthetic reconstruction of the paper's generic RLC case.",
+  "variants": {
+    "wbeif": {
+      "mode": "wbeif",
+      "objectives": [
+        "wsmse"
+      ],
+      "notes": "Traditional single-objective baseline."
+    },
+    "femeif_light": {
+      "mode": "femeif",
+      "objectives": [
+        "wsmse",
+        "ptc",
+        "ss",
+        "lfp"
+      ],
+      "notes": "Lower-cost FEMEIF set following the paper's time-sensitive guidance."
+    },
+    "femeif_all": {
+      "mode": "femeif",
+      "objectives": [
+        "wsmse",
+        "ptc",
+        "dtw",
+        "lfp",
+        "ss",
+        "lmep"
+      ],
+      "notes": "FEMEIF with all implemented auxiliary objectives."
+    }
+  },
+  "seeds": [
+    0,
+    1
+  ],
+  "generations": 3,
+  "population": 12,
+  "summary": [
+    {
+      "variant": "femeif_all",
+      "runs": 2,
+      "mean_best_wsmse": 206.72859118970234,
+      "std_best_wsmse": 20.474839084249933,
+      "min_best_wsmse": 192.25069362952587,
+      "max_best_wsmse": 221.20648874987884,
+      "mean_runtime_sec": 0.2613340500392951
+    },
+    {
+      "variant": "femeif_light",
+      "runs": 2,
+      "mean_best_wsmse": 216.5767630928635,
+      "std_best_wsmse": 34.40225735428208,
+      "min_best_wsmse": 192.25069362952587,
+      "max_best_wsmse": 240.90283255620113,
+      "mean_runtime_sec": 0.07695920002879575
+    },
+    {
+      "variant": "wbeif",
+      "runs": 2,
+      "mean_best_wsmse": 219.78278736603164,
+      "std_best_wsmse": 38.93626036269382,
+      "min_best_wsmse": 192.25069362952587,
+      "max_best_wsmse": 247.31488110253744,
+      "mean_runtime_sec": 0.029242999968118966
+    }
+  ]
+}
