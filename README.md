@@ -52,6 +52,15 @@ $env:PYTHONPATH = "src"
 python -m evo_impfit.cli compare --scenario rlc_case1 --variants wbeif,femeif_light,femeif_all --seeds 0,1,2 --generations 20 --population 50 --out output/compare-case1
 ```
 
+Generate the two mentor-facing showcase plots:
+
+```powershell
+$env:PYTHONPATH = "src"
+python -m evo_impfit.cli showcase --scenario rlc_case1 --variants wbeif,femeif_dtw,femeif_all --seeds 0,1,2,3,4 --generations 20 --population 50 --out output/teacher-case1
+```
+
+This writes `convergence.png` and `final_fit.png` under the output directory.
+
 Available comparison variants:
 
 - `wbeif`: single-objective baseline.

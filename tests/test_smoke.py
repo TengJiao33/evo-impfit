@@ -9,6 +9,7 @@ from evo_impfit.data import make_scenario, scenario_from_csv
 from evo_impfit.experiments import parse_variant_names, summarize_runs, RunSummary
 from evo_impfit.features import FeatureConfig, evaluate_objectives, weighted_mse
 from evo_impfit.optimizer import run_fitting
+from evo_impfit.showcase import run_showcase
 
 
 class SmokeTests(unittest.TestCase):
@@ -74,6 +75,25 @@ class SmokeTests(unittest.TestCase):
             loaded = scenario_from_csv(path, "rlc6")
         self.assertEqual(len(loaded.frequencies_hz), 8)
         self.assertEqual(len(loaded.specs), 18)
+
+    def test_showcase_generates_plots(self):
+        scenario = make_scenario("rlc_case1", n_points=24)
+        with tempfile.TemporaryDirectory() as tmp:
+            out_dir = Path(tmp)
+            runs = run_showcase(
+                scenario=scenario,
+                variant_names=("wbeif", "femeif_ptc"),
+                seeds=(0,),
+                generations=1,
+                population=8,
+                cfg=FeatureConfig(dtw_points=12),
+                out_dir=out_dir,
+            )
+            self.assertEqual(len(runs), 2)
+            self.assertGreater((out_dir / "convergence.png").stat().st_size, 0)
+            self.assertGreater((out_dir / "final_fit.png").stat().st_size, 0)
+            self.assertTrue((out_dir / "summary.csv").exists())
+            self.assertTrue((out_dir / "best_fits.csv").exists())
 
 
 if __name__ == "__main__":

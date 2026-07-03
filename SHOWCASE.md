@@ -26,6 +26,19 @@ Expected outputs:
 - `output/comparison-sanity/summary.csv` should contain one row per variant.
 - This short run is only a sanity check, not a paper-level reproduction claim.
 
+## Mentor-Facing Plots
+
+```powershell
+$env:PYTHONPATH='src'
+python -m evo_impfit.cli showcase --scenario rlc_case1 --variants wbeif,femeif_dtw,femeif_all --seeds 0,1,2,3,4 --generations 20 --population 50 --out output/teacher-case1
+```
+
+The command writes:
+
+- `convergence.png`: WSMSE convergence over generations.
+- `final_fit.png`: target impedance versus the best WBEIF and best FEMEIF fits.
+- `summary.csv`, `runs.csv`, `history.csv`, `best_parameters.csv`, and `best_fits.csv`.
+
 ## Data Note
 
 Case I can be reconstructed from the paper's public circuit table. The real

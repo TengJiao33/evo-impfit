@@ -11,6 +11,7 @@ from .data import make_scenario, scenario_from_csv
 from .experiments import parse_variant_names, run_comparison
 from .features import FeatureConfig, magnitude_db, phase_rad
 from .optimizer import run_fitting
+from .showcase import run_showcase
 
 
 DEFAULT_OBJECTIVES = ("wsmse", "ptc", "dtw", "lfp", "ss", "lmep")
@@ -234,6 +235,35 @@ def run_compare(args: argparse.Namespace) -> int:
     return 0
 
 
+def run_showcase_command(args: argparse.Namespace) -> int:
+    scenario = make_scenario(
+        args.scenario,
+        noise_mag_db=args.noise_mag_db,
+        noise_phase_rad=args.noise_phase_rad,
+        seed=args.scenario_seed,
+    )
+    cfg = FeatureConfig(alpha=args.alpha)
+    variants = parse_variant_names(args.variants)
+    seeds = _parse_seeds(args.seeds)
+    out_dir = Path(args.out)
+    rows = run_showcase(
+        scenario=scenario,
+        variant_names=variants,
+        seeds=seeds,
+        generations=args.generations,
+        population=args.population,
+        cfg=cfg,
+        out_dir=out_dir,
+    )
+    print(f"scenario={scenario.name}")
+    print(f"variants={','.join(variants)}")
+    print(f"runs={len(rows)}")
+    print(f"convergence={out_dir / 'convergence.png'}")
+    print(f"final_fit={out_dir / 'final_fit.png'}")
+    print(f"out={out_dir}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="evo-impfit")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -284,6 +314,19 @@ def build_parser() -> argparse.ArgumentParser:
     compare.add_argument("--noise-phase-rad", type=float, default=0.0)
     compare.add_argument("--out", default="output/compare")
     compare.set_defaults(func=run_compare)
+
+    showcase = subparsers.add_parser("showcase", help="Run showcase experiments and generate mentor-facing plots.")
+    showcase.add_argument("--scenario", choices=["rlc_case1", "motor_synthetic"], default="rlc_case1")
+    showcase.add_argument("--variants", default="wbeif,femeif_dtw,femeif_all")
+    showcase.add_argument("--seeds", default="0,1,2,3,4")
+    showcase.add_argument("--generations", type=int, default=20)
+    showcase.add_argument("--population", type=int, default=50)
+    showcase.add_argument("--scenario-seed", type=int, default=0)
+    showcase.add_argument("--alpha", type=float, default=25.12)
+    showcase.add_argument("--noise-mag-db", type=float, default=0.0)
+    showcase.add_argument("--noise-phase-rad", type=float, default=0.0)
+    showcase.add_argument("--out", default="output/teacher-case1")
+    showcase.set_defaults(func=run_showcase_command)
     return parser
 
 
